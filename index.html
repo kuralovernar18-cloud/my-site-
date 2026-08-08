@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskKZ</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        .search {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 15px 25px;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #taskForm {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .tasks {
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .task {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>TaskKZ</h2>
+</header>
+
+<div class="container">
+
+    <h1>Найди подработку</h1>
+
+    <p>Задания рядом с тобой и онлайн</p>
+
+    <button onclick="openForm()">+ Создать задание</button>
+
+    <div id="taskForm">
+
+        <h2>Создать задание</h2>
+
+        <input
+            id="taskTitle"
+            type="text"
+            placeholder="Название задания"
+        >
+
+        <input
+            id="taskDescription"
+            type="text"
+            placeholder="Описание задания"
+        >
+
+        <input
+            id="taskPrice"
+            type="number"
+            placeholder="Цена в ₸"
+        >
+
+        <button onclick="addTask()">Добавить задание</button>
+
+        <button onclick="closeForm()">Отмена</button>
+
+    </div>
+
+    <div class="search">
+
+        <h2>Поиск заданий</h2>
+
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Например: дизайн, перевод..."
+        >
+
+        <button onclick="searchTasks()">Поиск</button>
+        <button onclick="showAllTasks()">Показать все</button>
+
+    </div>
+
+    <div class="tasks" id="tasksContainer">
+
+        <div class="task">
+            <h2>Создать презентацию</h2>
+            <p>Нужно сделать презентацию на 10 слайдов.</p>
+            <p class="price">5 000 ₸</p>
+        </div>
+
+        <div class="task">
+            <h2>Сделать перевод</h2>
+            <p>Нужен перевод небольшого текста.</p>
+            <p class="price">3 000 ₸</p>
+        </div>
+
+        <div class="task">
+            <h2>Помочь с компьютером</h2>
+            <p>Настроить программу на ноутбуке.</p>
+            <p class="price">4 000 ₸</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function openForm() {
+    document.getElementById("taskForm").style.display = "block";
+}
+
+
+function closeForm() {
+    document.getElementById("taskForm").style.display = "none";
+}
+
+
+function addTask() {
+
+    let title = document.getElementById("taskTitle").value.trim();
+
+    let description =
+        document.getElementById("taskDescription").value.trim();
+
+    let price =
+        document.getElementById("taskPrice").value.trim();
+
+
+    if (title === "" || description === "" || price === "") {
+
+        alert("Пожалуйста, заполни все поля.");
+
+        return;
+    }
+
+
+    let newTask = document.createElement("div");
+
+    newTask.className = "task";
+
+
+    newTask.innerHTML = `
+        <h2>${title}</h2>
+        <p>${description}</p>
+        <p class="price">${price} ₸</p>
+    `;
+
+
+    document
+        .getElementById("tasksContainer")
+        .prepend(newTask);
+
+
+    document.getElementById("taskTitle").value = "";
+
+    document.getElementById("taskDescription").value = "";
+
+    document.getElementById("taskPrice").value = "";
+
+
+    closeForm();
+
+    alert("Задание добавлено!");
+}
+
+
+function searchTasks() {
+
+    let searchText =
+        document.getElementById("searchInput").value
+        .toLowerCase()
+        .trim();
+
+
+    let tasks =
+        document.querySelectorAll(".task");
+
+
+    tasks.forEach(function(task) {
+
+        let text =
+            task.innerText.toLowerCase();
+
+
+        if (text.includes(searchText)) {
+
+            task.style.display = "block";
+
+        } else {
+
+            task.style.display = "none";
+
+        }
+
+    });
+}
+
+
+function showAllTasks() {
+
+    let tasks =
+        document.querySelectorAll(".task");
+
+
+    tasks.forEach(function(task) {
+
+        task.style.display = "block";
+
+    });
+
+
+    document.getElementById("searchInput").value = "";
+}
+
+</script>
+
+</body>
+</html>
